@@ -9,10 +9,11 @@ import com.proyecto2026.web.product.infrastructure.api.dto.ProductDto;
 import com.proyecto2026.web.product.infrastructure.api.dto.UpdateProductDto;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-05-22T23:39:08-0500",
+    date = "2026-05-24T13:33:19-0500",
     comments = "version: 1.6.3, compiler: javac, environment: Java 21.0.10 (Eclipse Adoptium)"
 )
 @Component
@@ -24,13 +25,17 @@ public class ProductMapperImpl implements ProductMapper {
             return null;
         }
 
-        CreateProductRequest createProductRequest = new CreateProductRequest();
+        String name = null;
+        String description = null;
+        Double price = null;
+        MultipartFile file = null;
 
-        createProductRequest.setId( createProductDto.getId() );
-        createProductRequest.setName( createProductDto.getName() );
-        createProductRequest.setDescription( createProductDto.getDescription() );
-        createProductRequest.setPrice( createProductDto.getPrice() );
-        createProductRequest.setFile( createProductDto.getFile() );
+        name = createProductDto.getName();
+        description = createProductDto.getDescription();
+        price = createProductDto.getPrice();
+        file = createProductDto.getFile();
+
+        CreateProductRequest createProductRequest = new CreateProductRequest( name, description, price, file );
 
         return createProductRequest;
     }

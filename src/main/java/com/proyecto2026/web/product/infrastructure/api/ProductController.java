@@ -2,12 +2,14 @@ package com.proyecto2026.web.product.infrastructure.api;
 
 import com.proyecto2026.web.common.mediator.Mediator;
 import com.proyecto2026.web.product.application.command.create.CreateProductRequest;
+import com.proyecto2026.web.product.application.command.create.CreateProductResponse;
 import com.proyecto2026.web.product.application.command.delete.DeleteProductRequest;
 import com.proyecto2026.web.product.application.command.update.UpdateProductRequest;
 import com.proyecto2026.web.product.application.query.getAll.GetAllProductRequest;
 import com.proyecto2026.web.product.application.query.getAll.GetAllProductResponse;
 import com.proyecto2026.web.product.application.query.getById.GetProductByIdRequest;
 import com.proyecto2026.web.product.application.query.getById.GetProductByIdResponse;
+import com.proyecto2026.web.product.domain.entity.Product;
 import com.proyecto2026.web.product.infrastructure.api.dto.CreateProductDto;
 import com.proyecto2026.web.product.infrastructure.api.dto.ProductDto;
 import com.proyecto2026.web.product.infrastructure.api.dto.UpdateProductDto;
@@ -65,15 +67,17 @@ public class ProductController implements ProductApi {
     @PostMapping("")
     public ResponseEntity<Void> saveProduct(@ModelAttribute @Valid CreateProductDto createProductDto) {
 
-        log.info("Creating product with id: {}", createProductDto.getId());
+        log.info("Creating product");
 
         CreateProductRequest request = productMapper.mapToCreateProductRequest(createProductDto);
 
-        mediator.dispatch(request);
+        CreateProductResponse response = mediator.dispatch(request);
 
-        log.info("Product created with id: {}", createProductDto.getId());
+        Product product = response.getProduct();
 
-        return ResponseEntity.created(URI.create("/api/v1/products/".concat(createProductDto.getId().toString()))).build();
+        log.info("Product created with id: {}", product.getId());
+
+        return ResponseEntity.created(URI.create("/api/v1/products/".concat(product.getId().toString()))).build();
     }
 
     @Operation(summary = "Update product", description = "Update product")
@@ -103,6 +107,6 @@ public class ProductController implements ProductApi {
 
         return ResponseEntity.accepted().build();
     }
-    
+
 
 }
