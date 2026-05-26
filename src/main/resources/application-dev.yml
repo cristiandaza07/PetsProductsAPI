@@ -12,12 +12,18 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+        show_sql: true
+        format_sql: true
   servlet:
     multipart:
       max-file-size: 1MB
       max-request-size: 10MB
   cache:
     type: simple
+#  sql:
+#    init:
+#      mode: always
+#      data-locations: classpath:data.sql
 
 management:
   endpoints:

@@ -1,7 +1,7 @@
 package com.proyecto2026.web.product.application.command.create;
 
-import com.proyecto2026.web.common.mediator.RequestHandler;
-import com.proyecto2026.web.common.util.FileUtils;
+import com.proyecto2026.web.common.application.mediator.RequestHandler;
+import com.proyecto2026.web.common.infrastructure.util.FileUtils;
 import com.proyecto2026.web.product.domain.entity.Product;
 import com.proyecto2026.web.product.domain.port.ProductRepository;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package com.proyecto2026.web.product.application.query.getById;
 
-import com.proyecto2026.web.common.mediator.RequestHandler;
+import com.proyecto2026.web.common.application.mediator.RequestHandler;
 import com.proyecto2026.web.product.domain.entity.Product;
 import com.proyecto2026.web.product.domain.exception.ProductNotFoundException;
 import com.proyecto2026.web.product.domain.port.ProductRepository;

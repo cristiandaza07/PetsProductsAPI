@@ -1,4 +1,4 @@
-package com.proyecto2026.web.common.util;
+package com.proyecto2026.web.common.infrastructure.util;
 
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;

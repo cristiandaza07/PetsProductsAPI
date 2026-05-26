@@ -1,6 +1,6 @@
 package com.proyecto2026.web.product.application.command.update;
 
-import com.proyecto2026.web.common.mediator.Request;
+import com.proyecto2026.web.common.application.mediator.Request;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 

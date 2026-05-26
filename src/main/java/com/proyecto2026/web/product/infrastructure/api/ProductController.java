@@ -1,6 +1,8 @@
 package com.proyecto2026.web.product.infrastructure.api;
 
-import com.proyecto2026.web.common.mediator.Mediator;
+import com.proyecto2026.web.common.application.mediator.Mediator;
+import com.proyecto2026.web.common.domain.PaginationQuery;
+import com.proyecto2026.web.common.domain.PaginationResult;
 import com.proyecto2026.web.product.application.command.create.CreateProductRequest;
 import com.proyecto2026.web.product.application.command.create.CreateProductResponse;
 import com.proyecto2026.web.product.application.command.delete.DeleteProductRequest;
@@ -10,6 +12,7 @@ import com.proyecto2026.web.product.application.query.getAll.GetAllProductRespon
 import com.proyecto2026.web.product.application.query.getById.GetProductByIdRequest;
 import com.proyecto2026.web.product.application.query.getById.GetProductByIdResponse;
 import com.proyecto2026.web.product.domain.entity.Product;
+import com.proyecto2026.web.product.domain.entity.ProductFilter;
 import com.proyecto2026.web.product.infrastructure.api.dto.CreateProductDto;
 import com.proyecto2026.web.product.infrastructure.api.dto.ProductDto;
 import com.proyecto2026.web.product.infrastructure.api.dto.UpdateProductDto;
@@ -23,7 +26,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -37,16 +39,38 @@ public class ProductController implements ProductApi {
 
     @Operation(summary = "Get all products", description = "Get all products")
     @GetMapping("")
-    public ResponseEntity<List<ProductDto>> getAllProducts(@RequestParam(required = false) String pageSize) {
+    public ResponseEntity<PaginationResult<ProductDto>> getAllProducts(
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "5") int pageSize,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String direction,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String description,
+            @RequestParam(required = false) Double priceMin,
+            @RequestParam(required = false) Double priceMax
+    ) {
+
         log.info("Getting all products");
 
-        GetAllProductResponse response = mediator.dispatch(new GetAllProductRequest());
+        PaginationQuery paginationQuery = new PaginationQuery(pageNumber, pageSize, sortBy, direction);
 
-        List<ProductDto> productDtos = response.getProducts().stream().map(productMapper::mapToProductDto).toList();
+        ProductFilter productFilter = new ProductFilter(name, description, priceMin, priceMax);
 
-        log.info("Found {} Products", productDtos.size());
+        GetAllProductRequest getAllProductRequest = new GetAllProductRequest(paginationQuery, productFilter);
 
-        return ResponseEntity.ok(productDtos);
+        GetAllProductResponse response = mediator.dispatch(getAllProductRequest);
+
+        PaginationResult<Product> productsPage = response.getProductsPage();
+
+        PaginationResult<ProductDto> productDtoPaginationResult = new PaginationResult<>(
+                productsPage.getContent().stream().map(productMapper::mapToProductDto).toList(),
+                productsPage.getPage(),
+                productsPage.getSize(),
+                productsPage.getTotalPages(),
+                productsPage.getTotalElements()
+        );
+
+        return ResponseEntity.ok(productDtoPaginationResult);
     }
 
     @Operation(summary = "Get product by id", description = "Get product by id")

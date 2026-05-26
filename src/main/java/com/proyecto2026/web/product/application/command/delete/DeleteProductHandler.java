@@ -1,6 +1,6 @@
 package com.proyecto2026.web.product.application.command.delete;
 
-import com.proyecto2026.web.common.mediator.RequestHandler;
+import com.proyecto2026.web.common.application.mediator.RequestHandler;
 import com.proyecto2026.web.product.domain.port.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,12 +1,11 @@
 package com.proyecto2026.web.product.application.query.getAll;
 
-import com.proyecto2026.web.common.mediator.RequestHandler;
+import com.proyecto2026.web.common.application.mediator.RequestHandler;
+import com.proyecto2026.web.common.domain.PaginationResult;
 import com.proyecto2026.web.product.domain.entity.Product;
 import com.proyecto2026.web.product.domain.port.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -16,7 +15,7 @@ public class GetAllProductHandler implements RequestHandler<GetAllProductRequest
 
     @Override
     public GetAllProductResponse handle(GetAllProductRequest request) {
-        List<Product> products = productRepository.findAll();
+        PaginationResult<Product> products = productRepository.findAll(request.paginationQuery, request.productFilter);
         return new GetAllProductResponse(products);
     }
 

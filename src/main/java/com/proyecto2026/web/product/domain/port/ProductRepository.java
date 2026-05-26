@@ -1,8 +1,10 @@
 package com.proyecto2026.web.product.domain.port;
 
+import com.proyecto2026.web.common.domain.PaginationQuery;
+import com.proyecto2026.web.common.domain.PaginationResult;
 import com.proyecto2026.web.product.domain.entity.Product;
+import com.proyecto2026.web.product.domain.entity.ProductFilter;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface ProductRepository {
@@ -10,7 +12,7 @@ public interface ProductRepository {
 
     Optional<Product> findById(Long id);
 
-    List<Product> findAll();
+    PaginationResult<Product> findAll(PaginationQuery paginationQuery, ProductFilter productFilter);
 
     void deleteById(Long id);
 }

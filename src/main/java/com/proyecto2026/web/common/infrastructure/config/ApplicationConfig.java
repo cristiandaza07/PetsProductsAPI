@@ -1,4 +1,4 @@
-package com.proyecto2026.web.common.config;
+package com.proyecto2026.web.common.infrastructure.config;
 
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Configuration;

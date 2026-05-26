@@ -1,4 +1,4 @@
-package com.proyecto2026.web.common.exceptions;
+package com.proyecto2026.web.common.infrastructure.exceptions;
 
 import com.proyecto2026.web.product.domain.exception.ProductNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;

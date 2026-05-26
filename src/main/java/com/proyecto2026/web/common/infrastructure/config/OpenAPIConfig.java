@@ -1,4 +1,4 @@
-package com.proyecto2026.web.common.config;
+package com.proyecto2026.web.common.infrastructure.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
