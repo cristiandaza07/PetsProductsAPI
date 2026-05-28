@@ -2,6 +2,8 @@ package com.proyecto2026.web.product.infrastructure.api.dto;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class ProductDto {
     private Long id;
@@ -9,4 +11,8 @@ public class ProductDto {
     private String description;
     private Double price;
     private String image;
+    private String provider;
+    private List<ReviewDto> reviews;
+    private List<String> categories;
+
 }
