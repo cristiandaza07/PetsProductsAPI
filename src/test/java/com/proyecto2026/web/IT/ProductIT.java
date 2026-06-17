@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -24,12 +26,16 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 public class ProductIT {
 
     @Autowired
+    @Qualifier("restTemplate")
     private TestRestTemplate restTemplate;
+
+    @Value("${jwt.token}")
+    private String token;
 
     @Autowired
     private MockMvc mockMvc;
 
-    @Sql(value = {"/it/product/findById/data.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = {"/it/product/findById/findByIdData.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(value = {"/it/clean.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @Test
     public void getProductByIdExits() {
@@ -42,6 +48,7 @@ public class ProductIT {
         Assertions.assertEquals(199.99, response.getBody().getPrice());
     }
 
+    @Sql(value = {"/it/product/save/saveData.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(value = {"/it/clean.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @Test
     public void saveProduct() throws Exception {
@@ -58,6 +65,7 @@ public class ProductIT {
                         .param("specifications", "Especificaciones 2")
                         .param("warranty", "1 year")
                         .contentType(MediaType.MULTIPART_FORM_DATA)
+                        .header("Authorization", "Bearer ".concat(token))
         ).andExpect(MockMvcResultMatchers.status().isCreated());
     }
 

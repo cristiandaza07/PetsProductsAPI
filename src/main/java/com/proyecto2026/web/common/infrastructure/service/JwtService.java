@@ -90,4 +90,9 @@ public class JwtService {
         return generateToken(userDetails);
     }
 
+    public boolean isValidToken(String token, UserDetails userDetails) {
+        String username = getUsernameFromToken(token);
+        return username.equals(userDetails.getUsername());
+    }
+
 }

@@ -1,8 +1,10 @@
 package com.proyecto2026.web.common.infrastructure.exceptions;
 
 import com.proyecto2026.web.product.domain.exception.ProductNotFoundException;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -33,6 +35,17 @@ public class ApiExceptionHandler {
     @ExceptionHandler(ProductNotFoundException.class)
     @ResponseBody
     public ErrorMessage notFound(HttpServletRequest request, Exception exception) {
+
+        return new ErrorMessage(exception.getMessage(), exception.getClass().getSimpleName(), request.getRequestURI());
+
+    }
+
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler({
+            JwtException.class, AuthenticationException.class
+    })
+    @ResponseBody
+    public ErrorMessage forbidden(HttpServletRequest request, Exception exception) {
 
         return new ErrorMessage(exception.getMessage(), exception.getClass().getSimpleName(), request.getRequestURI());
 

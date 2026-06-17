@@ -38,3 +38,7 @@ management:
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
+
+jwt:
+  secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+  token: eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdGllcyI6WyJBRE1JTiJdLCJzdWIiOiJjcmlzdGlhbkBnbWFpbC5jb20iLCJpYXQiOjE3ODE2NDg3NzQsImV4cCI6MTc4MTczNTE3NH0.ZmKzHvk4wuQi-eFwPadTJjZVFaEEbNiKp1e2ywM_r1g

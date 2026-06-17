@@ -19,11 +19,13 @@ import com.proyecto2026.web.product.infrastructure.api.dto.ProductDto;
 import com.proyecto2026.web.product.infrastructure.api.dto.UpdateProductDto;
 import com.proyecto2026.web.product.infrastructure.api.mapper.ProductMapper;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -32,6 +34,7 @@ import java.net.URI;
 @RequestMapping("/api/v1/products")
 @Tag(name = "Product", description = "Product API opperations")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "Bearer Authentication")
 @Slf4j
 public class ProductController implements ProductApi {
 
@@ -90,6 +93,7 @@ public class ProductController implements ProductApi {
 
     @Operation(summary = "Create product and product detail", description = "Create product and product detail")
     @PostMapping("")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Void> saveProduct(@ModelAttribute @Valid CreateProductDto createProductDto) {
 
         log.info("Creating product");
