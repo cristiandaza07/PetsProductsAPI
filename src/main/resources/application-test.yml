@@ -1,4 +1,19 @@
 spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/products_it
+    username: root
+    password: password
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        show_sql: true
+        format_sql: true
   servlet:
     multipart:
       max-file-size: 1MB
@@ -23,3 +38,7 @@ management:
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
+
+jwt:
+  secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+  token: eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdGllcyI6WyJBRE1JTiJdLCJzdWIiOiJjcmlzdGlhbkBnbWFpbC5jb20iLCJpYXQiOjE3ODE2NDg3NzQsImV4cCI6MTc4MTczNTE3NH0.ZmKzHvk4wuQi-eFwPadTJjZVFaEEbNiKp1e2ywM_r1g

@@ -3,6 +3,7 @@ package com.proyecto2026.web.product.infrastructure.api;
 import com.proyecto2026.web.common.application.mediator.Mediator;
 import com.proyecto2026.web.common.domain.PaginationQuery;
 import com.proyecto2026.web.common.domain.PaginationResult;
+import com.proyecto2026.web.product.application.command.assignCategory.AssignCategoryRequest;
 import com.proyecto2026.web.product.application.command.create.CreateProductRequest;
 import com.proyecto2026.web.product.application.command.create.CreateProductResponse;
 import com.proyecto2026.web.product.application.command.delete.DeleteProductRequest;
@@ -18,11 +19,13 @@ import com.proyecto2026.web.product.infrastructure.api.dto.ProductDto;
 import com.proyecto2026.web.product.infrastructure.api.dto.UpdateProductDto;
 import com.proyecto2026.web.product.infrastructure.api.mapper.ProductMapper;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -31,6 +34,7 @@ import java.net.URI;
 @RequestMapping("/api/v1/products")
 @Tag(name = "Product", description = "Product API opperations")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "Bearer Authentication")
 @Slf4j
 public class ProductController implements ProductApi {
 
@@ -87,8 +91,9 @@ public class ProductController implements ProductApi {
         return ResponseEntity.ok(productDto);
     }
 
-    @Operation(summary = "Create product", description = "Create product")
+    @Operation(summary = "Create product and product detail", description = "Create product and product detail")
     @PostMapping("")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Void> saveProduct(@ModelAttribute @Valid CreateProductDto createProductDto) {
 
         log.info("Creating product");
@@ -132,5 +137,20 @@ public class ProductController implements ProductApi {
         return ResponseEntity.accepted().build();
     }
 
+    @PutMapping("/{productId}/categories/{categoryName}")
+    @Override
+    public ResponseEntity<Void> assignCategory(
+            @PathVariable String categoryName,
+            @PathVariable Long productId) {
 
+        log.info("Assigning category");
+
+        AssignCategoryRequest request = productMapper.mapToAssignCategoryRequest(categoryName, productId);
+
+        mediator.dispatch(request);
+
+        log.info("Category assigned");
+
+        return ResponseEntity.noContent().build();
+    }
 }

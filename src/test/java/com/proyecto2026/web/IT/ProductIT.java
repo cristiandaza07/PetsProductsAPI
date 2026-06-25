@@ -1,14 +1,12 @@
 package com.proyecto2026.web.IT;
 
-import com.proyecto2026.web.product.domain.entity.Product;
-import com.proyecto2026.web.product.domain.port.ProductRepository;
 import com.proyecto2026.web.product.infrastructure.api.dto.ProductDto;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -17,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -27,28 +26,17 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 public class ProductIT {
 
     @Autowired
+    @Qualifier("restTemplate")
     private TestRestTemplate restTemplate;
+
+    @Value("${jwt.token}")
+    private String token;
 
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private ProductRepository productRepository;
-
-    @BeforeEach
-    void setUp() {
-        log.info("Setting up integration test");
-        productRepository.save(
-                Product.builder().id(1L).name("Product 1").description("Description 1").price(100.0).build()
-        );
-    }
-
-    @AfterEach
-    void tearDown() {
-        log.info("Tearing down integration test");
-        productRepository.deleteById(1L);
-    }
-
+    @Sql(value = {"/it/product/findById/findByIdData.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = {"/it/clean.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @Test
     public void getProductByIdExits() {
         ResponseEntity<ProductDto> response = restTemplate.getForEntity("/api/v1/products/1", ProductDto.class);
@@ -57,9 +45,11 @@ public class ProductIT {
         Assertions.assertNotNull(response.getBody());
         Assertions.assertEquals("Product 1", response.getBody().getName());
         Assertions.assertEquals("Description 1", response.getBody().getDescription());
-        Assertions.assertEquals(100.0, response.getBody().getPrice());
+        Assertions.assertEquals(199.99, response.getBody().getPrice());
     }
 
+    @Sql(value = {"/it/product/save/saveData.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = {"/it/clean.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @Test
     public void saveProduct() throws Exception {
         MockMultipartFile file = new MockMultipartFile("file", "image.jpeg", "image/jpeg", "image".getBytes());
@@ -71,7 +61,11 @@ public class ProductIT {
                         .param("name", "Name 2")
                         .param("description", "Description 2")
                         .param("price", "150.00")
+                        .param("provider", "Proveedor 2")
+                        .param("specifications", "Especificaciones 2")
+                        .param("warranty", "1 year")
                         .contentType(MediaType.MULTIPART_FORM_DATA)
+                        .header("Authorization", "Bearer ".concat(token))
         ).andExpect(MockMvcResultMatchers.status().isCreated());
     }
 
