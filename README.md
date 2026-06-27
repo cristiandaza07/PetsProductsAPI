@@ -48,7 +48,7 @@
 ### **📁 Estructura del Proyecto**
 
 ``` 
-spring-security-cero-a-experto/
+petsproducts-backend/
 ├── .idea/                    # Configuración de IntelliJ IDEA
 ├── .mvn/                     # Maven Wrapper
 ├── docker-config/            # Configuración de Docker
