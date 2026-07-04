@@ -1,14 +1,13 @@
 ## 📋 **INFROMACIÓN DE TODO EL PROYECTO**
 
-### **CASOS DE USO**
-
 ### **Descripción General**
 
-- **Nombre:** Pets Products
-- **Grupo:** com.
+- **Nombre:** Pets Products API 
+- **Gestor de Dependencias:** Maven
 - **Versión:** 0.0.1-SNAPSHOT
 - **Java Version:** 21
 - **Spring Boot:** 3.5.3
+- **Bases de Datos:** PostgreSQL (Desarrollo/Producción), H2 (Pruebas)
 
 ### **🛠️ Tecnologías y Dependencias Principales**
 
@@ -63,6 +62,20 @@ petsproducts-backend/
 ├── postman_collection.json  # Colección de Postman
 └── README.md                # Documentación
 ```
+### ** Endpoints**
+
+URL para los Endpoints con Swagger:
+http://localhost:8080/swagger-ui/index.html
+
+### **Variables de entorno**
+
+Se utilizaron 5 variables de entorno en los application.yml en la carpeta de resources, las cuales son: 
+
+GITHUB_CLIENT_ID 
+GITHUB_CLIENT_SECRET
+PROFILE (Valores: dev, test, prod)
+SECRET_KEY
+TOKEN
 
 ### **🐳 Containerización**
 
