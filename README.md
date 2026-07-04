@@ -62,7 +62,7 @@ petsproducts-backend/
 ├── postman_collection.json  # Colección de Postman
 └── README.md                # Documentación
 ```
-### ** Endpoints**
+### **Endpoints**
 
 URL para los Endpoints con Swagger:
 http://localhost:8080/swagger-ui/index.html
