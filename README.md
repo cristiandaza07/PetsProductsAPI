@@ -1,5 +1,11 @@
 ## 📋 **INFROMACIÓN DE TODO EL PROYECTO**
 
+## Diagrama Entidad-Relación
+
+<p align="center">
+  <img src="uploads/Diagrama Relacional (Pets Products).png" alt="Pets Products ER Diagram" width="900">
+</p>
+
 ### **Descripción General**
 
 - **Nombre:** Pets Products API 
@@ -77,7 +83,7 @@ PROFILE (Valores: dev, test, prod)
 SECRET_KEY
 TOKEN
 
-### **🐳 Containerización**
+### **🐳 Contenerización**
 
 El proyecto incluye soporte completo para Docker:
 
